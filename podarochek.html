@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С Днем Святого Валентина!</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffe6e6;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            text-align: center;
+        }
+        .heart {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            transform: rotate(-45deg);
+            animation: pulse 1s infinite;
+            cursor: pointer;
+        }
+        .heart:before, .heart:after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            border-radius: 50%;
+        }
+        .heart:before {
+            top: -50px;
+            left: 0;
+        }
+        .heart:after {
+            top: 0;
+            left: 50px;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1) rotate(-45deg); }
+            50% { transform: scale(1.1) rotate(-45deg); }
+            100% { transform: scale(1) rotate(-45deg); }
+        }
+        .message {
+            font-size: 24px;
+            color: #d60000;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .hidden-content {
+            display: none;
+            font-size: 20px;
+            color: #ff0000;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 18px;
+            color: white;
+            background-color: #ff4081;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .button:hover {
+            background-color: #e91e63;
+        }
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .image-gallery img {
+            width: 150px;
+            height: auto;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <canvas class="confetti"></canvas>
+    <div class="container">
+        <div class="heart" onclick="showSurprises()"></div>
+        <div class="message">С Днем Святого Валентина! ❤️</div>
+        <div class="hidden-content" id="hiddenMessage">Ты моя незаменимая Жена! 💕 Ты мой свет в этом мире! 💖</div>
+        <button class="button" onclick="showLoveNote()">Открыть сюрприз</button>
+        <button class="button" onclick="playMusic()">Включить музыку</button>
+        <div class="hidden-content" id="loveNote" style="display: none;">Я благодарен за каждый момент с тобой! 💞</div>
+        <div class="image-gallery">
+            <img src="https://source.unsplash.com/150x150/?love,heart" alt="Love Image">
+            <img src="https://source.unsplash.com/150x150/?valentine" alt="Valentine">
+            <img src="https://source.unsplash.com/150x150/?romance" alt="Romantic Scene">
+        </div>
+        <audio id="music" controls>
+            <source src="https://example.com/sadsvit-molodist.mp3" type="audio/mpeg">
+            Ваш браузер не поддерживает аудио.
+        </audio>
+    </div>
+
+    <script>
+        function showSurprises() {
+            document.getElementById("hiddenMessage").style.display = "block";
+            startConfetti();
+        }
+        function showLoveNote() {
+            document.getElementById("loveNote").style.display = "block";
+        }
+        function playMusic() {
+            let music = document.getElementById("music");
+            music.play().catch(error => console.log("Ошибка воспроизведения: " + error));
+        }
+        function startConfetti() {
+            const confettiCanvas = document.querySelector('.confetti');
+            const ctx = confettiCanvas.getContext('2d');
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+            let confettiParticles = [];
+            for (let i = 0; i < 100; i++) {
+                confettiParticles.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height,
+                    size: Math.random() * 5 + 2,
+                    speedY: Math.random() * 3 + 2,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`
+                });
+            }
+            function animateConfetti() {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                confettiParticles.forEach(p => {
+                    p.y += p.speedY;
+                    if (p.y > confettiCanvas.height) p.y = 0;
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(animateConfetti);
+            }
+            animateConfetti();
+        }
+    </script>
+</body>
+</html>
